@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using System.Linq;
 using System.Web;
 
@@ -18,11 +18,11 @@ public class Data
 
         try
         {
-            SqlConnection Connection = new SqlConnection(ConnectionString);
+            MySqlConnection Connection = new MySqlConnection(ConnectionString);
             Connection.Open();
 
-            SqlCommand sqlCmd = new SqlCommand(sql, Connection);
-            SqlDataAdapter sqlDa = new SqlDataAdapter(sqlCmd);
+			MySqlCommand sqlCmd = new MySqlCommand(sql, Connection);
+			MySqlDataAdapter sqlDa = new MySqlDataAdapter(sqlCmd);
             sqlDa.Fill(sqlDs);
 
             Connection.Close();
@@ -41,10 +41,10 @@ public class Data
 
         try
         {
-            SqlConnection Connection = new SqlConnection(ConnectionString);
+			MySqlConnection Connection = new MySqlConnection(ConnectionString);
             Connection.Open();
 
-            SqlCommand sqlCmd = new SqlCommand(sql, Connection);
+			MySqlCommand sqlCmd = new MySqlCommand(sql, Connection);
             rtn = sqlCmd.ExecuteScalar();
 
             Connection.Close();
@@ -61,10 +61,10 @@ public class Data
     {
         try
         {
-            SqlConnection Connection = new SqlConnection(ConnectionString);
+            MySqlConnection Connection = new MySqlConnection(ConnectionString);
             Connection.Open();
 
-            SqlCommand sqlCmd = new SqlCommand(sql, Connection);
+            MySqlCommand sqlCmd = new MySqlCommand(sql, Connection);
             sqlCmd.ExecuteNonQuery();
 
             Connection.Close();

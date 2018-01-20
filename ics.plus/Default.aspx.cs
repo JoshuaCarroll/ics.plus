@@ -12,6 +12,7 @@ public partial class _Default : System.Web.UI.Page
         if ((!Page.IsPostBack) && (Request.QueryString["id"] != string.Empty))
         {
 			TraccarReport tr = new TraccarReport(Request.RawUrl);
+			tr.Save();
         }
     }
 }
