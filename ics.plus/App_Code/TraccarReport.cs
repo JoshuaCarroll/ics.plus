@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Net;
 using System.Web;
 
 /// <summary>
@@ -34,7 +35,7 @@ public class TraccarReport
 
     public TraccarReport(string rawURL)
     {
-        NameValueCollection nvCol = HttpUtility.ParseQueryString(rawURL);
+        NameValueCollection nvCol = HttpUtility.ParseQueryString(rawURL.Substring(2));
 		DeviceId = nvCol["id"];
 		float.TryParse(nvCol["lat"], out Latitude);
 		float.TryParse(nvCol["lon"], out Longitude);
@@ -63,8 +64,14 @@ public class TraccarReport
 
 	public void Save()
 	{
-		string strSql = "INSERT INTO TraccarReports (DeviceId, lat, lon, reportTime, altitude, speed, bearing, battery, rawUrl) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}');";
-		strSql = string.Format(strSql, DeviceId, Latitude, Longitude, Timestamp, Altitude, Speed, Bearing, Battery, RawURL);
-		Data.Write(strSql);
+		string strUrl = "https://93f.azurewebsites.net/api/PostLocation?id={0}&lat={1}&lon={2}&timestamp={3}&altitude={4}&speed={5}&bearing={6}&battery={7}&rawUrl={8}";
+		strUrl = string.Format(strUrl, DeviceId, Latitude, Longitude, Timestamp, Altitude, Speed, Bearing, Battery, RawURL);
+		HttpWebRequest request = WebRequest.Create(strUrl) as HttpWebRequest;
+		HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+		
+
+		//string strSql = "INSERT INTO TraccarReports (DeviceId, lat, lon, reportTime, altitude, speed, bearing, battery, rawUrl) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}');";
+		//strSql = string.Format(strSql, DeviceId, Latitude, Longitude, Timestamp, Altitude, Speed, Bearing, Battery, RawURL);
+		//Data.Write(strSql);
 	}
 }
